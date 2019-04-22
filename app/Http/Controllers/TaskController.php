@@ -92,7 +92,7 @@ class TaskController extends Controller
     {
         $task = Task::find($id);
         $task->content = $request->content;
-        $task->save;
+        $task->save();
         
         return redirect('/');
     }
