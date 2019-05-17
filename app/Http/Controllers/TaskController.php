@@ -24,15 +24,16 @@ class TaskController extends Controller
                 
                 'tasks' => $tasks,
             ];
+            return view('tasks.index',[
+            'tasks' => $tasks,
+            ]);
         }
         
         return view('welcome', $data);
     
         $tasks = Task::all();
         
-        return view('tasks.index',[
-            'tasks' => $tasks,
-            ]);
+        
     }
 
     /**
