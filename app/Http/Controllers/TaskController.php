@@ -66,7 +66,9 @@ class TaskController extends Controller
         $task = new Task;
         $task->status = $request->status;
         $task->content = $request->content;
+        $task->user_id;
         $task->save();
+        
         
         return redirect('/');
     }
@@ -131,7 +133,9 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        $task = Task::find($id);
+        $task = \App\Task::find($id);
+        
+        $task = Task::find($user_id);
         $task->delete();
         
         return redirect('/');
