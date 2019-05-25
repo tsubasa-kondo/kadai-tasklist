@@ -43,11 +43,14 @@ class TaskController extends Controller
      */
     public function create()
     {
+         if (\Auth::check()) {
+            $user = \Auth::user();
         $task = new Task;
         
         return view('tasks.create',[
             'task' => $task,
             ]);
+         }
     }
 
     /**
@@ -63,12 +66,15 @@ class TaskController extends Controller
         'status' => 'required|max:10',
         ]);
         
+        if (\Auth::check()) {
+            $user = \Auth::user();
+            
         $task = new Task;
         $task->status = $request->status;
         $task->content = $request->content;
-        $task->user_id;
+        $task->user_id = $user->id;
         $task->save();
-        
+        }
         
         return redirect('/');
     }
@@ -79,13 +85,18 @@ class TaskController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+     
     public function show($id)
     {
+        
+         if (\Auth::check()) {
+            $user = \Auth::user();
         $task = Task::find($id);
         
         return view('tasks.show',[
             'task' => $task,
             ]);
+         }
     }
 
     /**
@@ -112,6 +123,8 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
+         if (\Auth::check()) {
+            $user = \Auth::user();
         $this->validate($request, [
         'content' => 'required|max:191',
         'status' => 'required|max:10',
@@ -124,6 +137,7 @@ class TaskController extends Controller
         
         return redirect('/');
     }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -134,10 +148,11 @@ class TaskController extends Controller
     public function destroy($id)
     {
         $task = \App\Task::find($id);
+
+        if (\Auth::id() === $task->user_id) {
+            $task->delete();
+        }
         
-        $task = Task::find($user_id);
-        $task->delete();
-        
-        return redirect('/');
+        return back();
     }
 }
