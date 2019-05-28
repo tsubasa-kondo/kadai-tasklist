@@ -32,8 +32,6 @@ class TaskController extends Controller
         return view('welcome', $data);
     
         $tasks = Task::all();
-        
-        
     }
 
     /**
@@ -46,11 +44,11 @@ class TaskController extends Controller
          if (\Auth::check()) {
             $user = \Auth::user();
         $task = new Task;
+        }
         
         return view('tasks.create',[
             'task' => $task,
             ]);
-         }
     }
 
     /**
@@ -86,17 +84,16 @@ class TaskController extends Controller
      * @return \Illuminate\Http\Response
      */
      
-    public function show($id)
-    {
+    public function show($id){
         
          if (\Auth::check()) {
             $user = \Auth::user();
         $task = Task::find($id);
+        }
         
         return view('tasks.show',[
             'task' => $task,
             ]);
-         }
     }
 
     /**
@@ -134,9 +131,8 @@ class TaskController extends Controller
         $task->status = $request->status;
         $task->content = $request->content;
         $task->save();
-        
+        }
         return redirect('/');
-    }
     }
 
     /**
@@ -148,11 +144,11 @@ class TaskController extends Controller
     public function destroy($id)
     {
         $task = \App\Task::find($id);
-
-        if (\Auth::id() === $task->user_id) {
+        
+        if (\Auth::id() === $task->user_id){
             $task->delete();
         }
-        
         return back();
     }
 }
+
